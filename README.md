@@ -23,37 +23,36 @@ Wgen setting up cloud trail, enable SNS. I have chosen the original SNS topic th
 ![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/5.png?raw=true)
 <br />
 <br />
-I put the contents of the file into a cipher identifier and discovered that it was a base 58 cipher. The same website had a cipher decoder, so I put the encrypted message into that. After decoding the message, I found that the encrypted message contained the SSH key. I saved the SSH key as a file named “key” on my machine using the cat >> key command.:  <br/>
+Once the cloud trail has been set up the status should read as logging:  <br/>
 ![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/6.png?raw=true)
 <br />
 <br />
 
-To begin with exploitation my next step was to attempt to crack the passphrase of the key file. One of the best tools for cracking passwords is John the ripper, which is also configured in Kali Linux by default. For the SSH key I had to first of extract the hash from the key before I could crack it. This can be done by using ssh2john which is a utility within the john the ripper tool. I extracted the hash by using the command ssh2john key > hash. 
-Now I was able to use john the ripper to crack the hash file and find the password of the SSH key. After running john, the ripper using the default wordlist “fasttrack.txt” the results showed that the password was “P@55w0rd!”:  <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/8.png?raw=true)
+The next step is to set up a rule in Amazon event bridge:  <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/7.png?raw=true)
 <br />
 <br />
-Now that I has the password, I was able to log in as the user “icex64@LupinOne”. My immediant next step was to check the sudo permissions of the current user “icex64”, I was able to find a python file. I attempted to view the contents of the python file “heist.py” that seemed to be owned by another user named “arsene”, it however only displayed a text to be displayed upon execution. I continued to enumerate the target machine in an attempt to find a vulnerability. 
-I used the find command to identify files with full permissions on the target machine. I found another file named “webbrowser.py” which after running the ls -l command I found that the root user owns it. the file permissions are set to 777 which means the current user has read, write, and executed permissions for the python file. This means that the file could be edited and have code entered into it. it also means that it is susceptible to python library hijacking.:  <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/9.png?raw=true)
+In the creation method, choose Custom pattern (JSON editor). Within the custom JSON, the "source" field specifies the AWS resource— in this case, it's aws.sts. The "detail-type" should be set to AWS API Call via CloudTrail, which indicates that the event type being captured is an API call recorded by CloudTrail.
+
+The "eventSource" field confirms the event is related to the STS (Security Token Service), which is used for identity and access management. Finally, the "eventName" identifies the specific API call being made to the STS service— in this case, it is GetCallerIdentity.":  <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/8.png?raw=true)
+<br />
+<br /> 
+In the next step which is select targets you want to select SNS topic and search for the one that you created, which in this case is APICallAlert1. :  <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/9.png?raw=true)
 <br />
 <br />
- To begin python library hijacking I utilised the nano command to edit the python script to call /bin/bash code into it. here is the code I entered into the python file os.system (“/bin/bash”)
-After this I ran the sudo command along with the coordinates specified in the permissions check on “ice64x” to switch the user to “arsene”. 
-:  <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/10.png?raw=true)
+ 
+Here you can see the sataus is enabled meaning the amazon event bridge rule has been succesfully set up:  <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/10.png?raw=true)
 <br />
 <br />
-I then began to identify the privileges of the user “arsene”. After analysing the outputs I spotted a new vulnerability that could allow me to escalate user privilege. The vulnerability I discovered was PIP Privilege escalation. Python package manager (PIP) is a widely used tool for managing and installing Python packages, however it has been found to have privilege escalation vulnerabilities that can be exploited by attackers to gain access to a user’s system . 
-:  <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/11.png?raw=true)
-<br />
-<br />
-I used these three commands to escalate user privilege, all had to do was then simply CD into root and open the root.txt file and the vulnerable VM had been completed.
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/12.png?raw=true)
+To run the attacker commands, use a VM Firstly iin Powershell I have entered the command "aws configure". This command sets up the CLI to interact with the AWS console. When entering this it should prompt you yo enter you AWS access key and then your AWS secret access key. After entering these it will prompt you to enter your region name which in this case is "eu-north-1". Then it will ask you for the default output format, here I have entered JSON.
+Now you can run the command sts get-caller-identity which should create an email alert.
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/13.png?raw=true)
 <br />
 As you can see after opening the root.txt I had completed the vulnerable VM.
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/13.png?raw=true)
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/14.png?raw=true)
 
 
 
