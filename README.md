@@ -2,29 +2,29 @@
 <h2>Project walk-through:</h2>
 
 <p align="center">
-My first step was to run a port scan using nmap against the IP address of the vulnerable machine : <br/>
+Set up an AWS account : <br/>
 
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/1.png?raw=true)
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/1.png?raw=true)
 <br />
 <br />
-In the command I used the -sV option for version enumeration and -p- to conduct a full port scan, the results of the scan showed that port 80 is being used for the HTTP service and port 22 is being used for SSH. :  <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/2.png?raw=true)
+ Set up simple notification service so that you can get an email anytime attacker activity is detected. Here I have created a topic named APICallAlert1:  <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/2.png?raw=true)
 <br />
 <br />
-Next, I wanted to run an enumeration scan on the targets IP address to identify any hidden directories, I used the tool Drib for this which is preinstalled on Kali Linux. I was able to identify a few files and directories from the scan and decided to enter a few of them into a search engine. One of the directories lead me to an interesting discovery. The robots.txt file contained the name of another directory.: <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/3.png?raw=true)
+The next step is to create a subscription for this topic. Select the protocol email and emter the email address where you would like to recive the alerts. Now SNS has been set up to send email alerts: <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/3.png?raw=true)
 <br />
 <br />
-However, this identified directory could not be found. There could be other directories starting with the same ~ character, however. In an attempt to find more directories I used a method called “fuzzing” which is the process of guessing directory names. I used an automated tool called FFUF for this process:   <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/4.png?raw=true)
+The next step is to set up cloud trail, this will let us log everyhting that takes place in our AWS account. By logging the activity it will be able to detect any maliicous activity whcih will then be notified by SNS:   <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/4.png?raw=true)
 <br />
 <br />
-After running the FFUF tool on the ~ sign I was able to find a directory named ~secret, after opening this file I found a hint that says the SSH private key is hidden somewhere in this directory. I ran another FFUF scan this time on ~secret. This scan brute forced the ~secret directory in order to search for hidden files. One file returned many responses, so I decided to open it on the browser. This is what the file contained:  <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/5.png?raw=true)
+Wgen setting up cloud trail, enable SNS. I have chosen the original SNS topic that I set up earlier:  <br/>
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/5.png?raw=true)
 <br />
 <br />
 I put the contents of the file into a cipher identifier and discovered that it was a base 58 cipher. The same website had a cipher decoder, so I put the encrypted message into that. After decoding the message, I found that the encrypted message contained the SSH key. I saved the SSH key as a file named “key” on my machine using the cat >> key command.:  <br/>
-![image alt](https://github.com/Samuel-James971/Pen-Testing/blob/main/7.png?raw=true)
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/6.png?raw=true)
 <br />
 <br />
 
