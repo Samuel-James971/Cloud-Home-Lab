@@ -51,8 +51,8 @@ To run the attacker commands, use a VM Firstly iin Powershell I have entered the
 Now you can run the command sts get-caller-identity which should create an email alert.
 ![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/15.png?raw=true)
 <br />
-As you can see after opening the root.txt I had completed the vulnerable VM.
-![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/14.png?raw=true)
+Here you can see the email alert has been triggered, containing the log that has been generated from that alert.
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/16.png?raw=true)
 
 
 
