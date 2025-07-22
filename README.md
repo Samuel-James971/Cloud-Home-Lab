@@ -49,7 +49,7 @@ Here you can see the sataus is enabled meaning the amazon event bridge rule has 
 <br />
 To run the attacker commands, use a VM Firstly iin Powershell I have entered the command "aws configure". This command sets up the CLI to interact with the AWS console. When entering this it should prompt you yo enter you AWS access key and then your AWS secret access key. After entering these it will prompt you to enter your region name which in this case is "eu-north-1". Then it will ask you for the default output format, here I have entered JSON.
 Now you can run the command sts get-caller-identity which should create an email alert.
-![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/13.png?raw=true)
+![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/15.png?raw=true)
 <br />
 As you can see after opening the root.txt I had completed the vulnerable VM.
 ![image alt](https://github.com/Samuel-James971/Cloud-Home-Lab/blob/main/14.png?raw=true)
