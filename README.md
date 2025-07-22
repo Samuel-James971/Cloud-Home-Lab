@@ -1,4 +1,15 @@
 # Cloud-Home-Lab
+
+
+This report outlines the process of configuring AWS services to detect and alert on potential attacker activity through API monitoring. The setup begins with the creation of an AWS account and the configuration of Amazon Simple Notification Service (SNS) to send email alerts. An SNS topic and subscription are created to notify users of suspicious actions.
+
+Next, AWS CloudTrail is configured to log all API activity within the AWS environment, enabling the identification of potentially malicious behavior. During setup, CloudTrail is integrated with the previously created SNS topic to automate alerting.
+
+Following this, a rule is created in Amazon EventBridge using a custom JSON pattern to monitor specific API calls, particularly the GetCallerIdentity action from AWS STS. The rule targets the SNS topic to ensure real-time alerting.
+
+Finally, the setup is tested by simulating attacker behavior through AWS CLI on a virtual machine. Upon execution of the sts get-caller-identity command, an email alert is successfully triggered, confirming that the detection and notification pipeline is functioning as intended.
+
+
 <h2>Project walk-through:</h2>
 
 <p align="center">
