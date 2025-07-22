@@ -1,4 +1,4 @@
-# Cloud-Home-Lab
+# AWS Cloud Security monitoring 
 
 
 This report outlines the process of configuring AWS services to detect and alert on potential attacker activity through API monitoring. The setup begins with the creation of an AWS account and the configuration of Amazon Simple Notification Service (SNS) to send email alerts. An SNS topic and subscription are created to notify users of suspicious actions.
